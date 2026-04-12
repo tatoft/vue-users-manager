@@ -1,9 +1,23 @@
 <script setup>
-import { ref } from 'vue'
+import { ref, onMounted } from 'vue'
 import UserModal from './user-modal.component.vue'
 import UserForm from './user-form.component.vue'
+import { UserService } from '../services/user.service'
 
 const showModal = ref(false)
+const userService = new UserService()
+const users = ref([])
+
+const fetchUsers = async () => {
+  const data = await userService.getAll()
+  console.log(data)
+  users.value = data
+}
+
+onMounted(() => {
+  fetchUsers()
+})
+
 </script>
 
 <template>
@@ -35,14 +49,13 @@ const showModal = ref(false)
         </tr>
       </thead>
       <tbody>
-        <tr v-for="user in users" :key="user.id" class="border-b border-gray-100">
-          <td class="text-gray-900 font-medium py-4 pr-6">{{ user.name }}</td>
-          <td class="text-gray-500 py-4 pr-6">{{ user.username }}</td>
-          <td class="text-gray-500 py-4 pr-6">{{ user.email }}</td>
-          <td class="text-gray-500 py-4 pr-6">{{ user.phone }}</td>
+        <tr class="border-b border-gray-100">
+          <td class="text-gray-900 font-medium py-4 pr-6"></td>
+          <td class="text-gray-500 py-4 pr-6"></td>
+          <td class="text-gray-500 py-4 pr-6"></td>
+          <td class="text-gray-500 py-4 pr-6"></td>
           <td class="py-4 text-right space-x-3">
-            <button class="text-indigo-600 hover:text-indigo-500 font-medium">Edit</button>
-            <button class="text-red-500 hover:text-red-400 font-medium">Delete</button>
+
           </td>
         </tr>
       </tbody>
