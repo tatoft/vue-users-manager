@@ -1,5 +1,5 @@
 <script setup>
-import { ref } from 'vue'
+import { Field, Form, ErrorMessage } from 'vee-validate'
 
 const emit = defineEmits(['submit', 'cancel'])
 
@@ -16,42 +16,48 @@ const props = defineProps({
   }
 })
 
-const form = ref({
+const form = {
   name: props.user?.name || '',
   username: props.user?.username || '',
   email: props.user?.email || '',
   phone: props.user?.phone || ''
-})
+}
 
-const handleSubmit = () => {
-  emit('submit', form.value)
+const handleSubmit = (values) => {
+  emit('submit', values)
 }
 
 
 </script>
 
 <template>
-  <form @submit.prevent="handleSubmit">
+  <Form :key="props.user?.id ?? 'new'" :initial-values="form" @submit="handleSubmit">
     <div class="flex flex-col gap-4">
       <div>
         <label class="form-label" for="name">Name</label>
-        <input id="name" v-model="form.name" type="text" class="form-input" placeholder="Enter name" required>
+        <Field id="name" name="name" rules="required" as="input" type="text" class="form-input"
+          placeholder="Enter name" />
+        <ErrorMessage name="name" class="text-red-400 text-xs mt-1" />
       </div>
       <div>
         <label class="form-label" for="username">Username</label>
-        <input id="username" v-model="form.username" type="text" class="form-input" placeholder="Enter username"
-          required>
+        <Field id="username" name="username" rules="required" as="input" type="text" class="form-input"
+          placeholder="Enter username" />
+        <ErrorMessage name="username" class="text-red-400 text-xs mt-1" />
       </div>
       <div>
         <label class="form-label" for="email">Email</label>
-        <input id="email" v-model="form.email" type="email" class="form-input" placeholder="Enter email" required>
+        <Field id="email" name="email" rules="required|email" as="input" type="email" class="form-input"
+          placeholder="Enter email" />
+        <ErrorMessage name="email" class="text-red-400 text-xs mt-1" />
       </div>
       <div>
         <label class="form-label" for="phone">Phone</label>
-        <input id="phone" v-model="form.phone" type="text" class="form-input" placeholder="Enter phone" required>
+        <Field id="phone" name="phone" rules="required" as="input" type="text" class="form-input"
+          placeholder="Enter phone" />
+        <ErrorMessage name="phone" class="text-red-400 text-xs mt-1" />
       </div>
 
-      <!-- Buttons -->
       <div class="flex items-center justify-end gap-3 pt-2">
         <button type="button" @click="emit('cancel')" class="btn-secondary">
           Cancel
@@ -61,5 +67,5 @@ const handleSubmit = () => {
         </button>
       </div>
     </div>
-  </form>
+  </Form>
 </template>
