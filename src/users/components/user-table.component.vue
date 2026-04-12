@@ -10,7 +10,7 @@ const users = ref([])
 
 const fetchUsers = async () => {
   const data = await userService.getAll()
-  console.log(data)
+  //console.log(data)
   users.value = data
 }
 
@@ -38,24 +38,25 @@ onMounted(() => {
     </div>
 
     <!-- Table -->
-    <table class="w-full text-sm text-left">
+    <table class="w-full text-sm table-fixed text-left">
       <thead>
         <tr class="border-b border-gray-200">
           <th class="text-gray-900 font-semibold pb-3 pr-6">Name</th>
           <th class="text-gray-900 font-semibold pb-3 pr-6">Username</th>
           <th class="text-gray-900 font-semibold pb-3 pr-6">Email</th>
           <th class="text-gray-900 font-semibold pb-3 pr-6">Phone</th>
-          <th class="pb-3"></th>
+          <th class="text-gray-900 font-semibold pb-3 pr-6 text-center">Actions</th>
         </tr>
       </thead>
       <tbody>
-        <tr class="border-b border-gray-100">
-          <td class="text-gray-900 font-medium py-4 pr-6"></td>
-          <td class="text-gray-500 py-4 pr-6"></td>
-          <td class="text-gray-500 py-4 pr-6"></td>
-          <td class="text-gray-500 py-4 pr-6"></td>
-          <td class="py-4 text-right space-x-3">
-
+        <tr v-for="user in users" :key="user.id" class="border-b border-gray-100">
+          <td class="text-gray-900 font-medium py-4 pr-6">{{ user.name }}</td>
+          <td class="text-gray-500 py-4 pr-6">{{ user.username }}</td>
+          <td class="text-gray-500 py-4 pr-6">{{ user.email }}</td>
+          <td class="text-gray-500 py-4 pr-6">{{ user.phone }}</td>
+          <td class="py-4 text-center space-x-3">
+            <button class="text-[#1A388B]/90 hover:opacity-75 cursor-pointer">Edit</button>
+            <button class="text-red-600 hover:opacity-75 cursor-pointer">Delete</button>
           </td>
         </tr>
       </tbody>
