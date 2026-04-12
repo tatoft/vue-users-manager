@@ -5,9 +5,18 @@ import UserForm from './user-form.component.vue'
 import { UserService } from '../services/user.service'
 
 const showModal = ref(false)
+const loading = ref(false)
 const userService = new UserService()
 const users = ref([])
-const loading = ref(false)
+const selectedUser = ref(null)
+
+const showConfirm = ref(false)
+const userToDelete = ref(null)
+
+const openEdit = (user) => {
+  selectedUser.value = user
+  showModal.value = true
+}
 
 const fetchUsers = async () => {
   loading.value = true
@@ -20,6 +29,25 @@ const fetchUsers = async () => {
 const addUser = (formData) => {
   userService.create(users.value, formData)
   showModal.value = false
+}
+
+const editUser = (formData) => {
+  const updatedUser = { id: selectedUser.value.id, ...formData }
+  userService.update(users.value, updatedUser)
+
+  showModal.value = false
+  selectedUser.value = null
+}
+
+const openDelete = (userId) => {
+  userToDelete.value = userId
+  showConfirm.value = true
+}
+
+const confirmDelete = () => {
+  userService.delete(users.value, userToDelete.value)
+  showConfirm.value = false
+  userToDelete.value = null
 }
 
 onMounted(() => {
@@ -40,8 +68,10 @@ onMounted(() => {
         <p class="text-sm">Add User</p>
       </button>
       <!-- Modal -->
-      <UserModal :show="showModal" title="Add User" @close="showModal = false">
-        <UserForm @cancel="showModal = false" @submit="addUser" />
+      <UserModal :show="showModal" :title="selectedUser ? 'Edit User' : 'Add User'"
+        @close="showModal = false; selectedUser = null">
+        <UserForm :user="selectedUser" @cancel="showModal = false"
+          @submit="selectedUser ? editUser($event) : addUser($event)" />
       </UserModal>
     </div>
 
@@ -68,14 +98,28 @@ onMounted(() => {
           <td class="text-gray-500 py-4 pr-6">{{ user.email }}</td>
           <td class="text-gray-500 py-4 pr-6">{{ user.phone }}</td>
           <td class="py-4 text-center space-x-3">
-            <button class="text-[#1A388B]/90 hover:opacity-75 cursor-pointer">Edit</button>
-            <button class="text-red-600 hover:opacity-75 cursor-pointer">Delete</button>
+            <!-- al hacer click en Edit, abrimos el modal pero esta vez con los datos del usuario seleccionado -->
+            <button class="text-[#1A388B]/90 hover:opacity-75 cursor-pointer" @click="openEdit(user)">Edit</button>
+            <button class="text-red-600 hover:opacity-75 cursor-pointer" @click="openDelete(user.id)">Delete</button>
           </td>
         </tr>
       </tbody>
     </table>
 
 
-
+    <!-- Modal confirmación delete -->
+    <UserModal :show="showConfirm" title="Eliminar Usuario" @close="showConfirm = false">
+      <p class="text-gray-400 text-sm mb-6">¿Estás seguro de eliminar este usuario? Esta acción no se puede
+        deshacer.</p>
+      <div class="flex justify-end gap-3">
+        <button @click="showConfirm = false" class="btn-secondary">
+          Cancelar
+        </button>
+        <button @click="confirmDelete"
+          class="rounded-md bg-red-500 px-3 py-2 text-sm font-semibold text-white hover:opacity-90 cursor-pointer">
+          Eliminar
+        </button>
+      </div>
+    </UserModal>
   </main>
 </template>

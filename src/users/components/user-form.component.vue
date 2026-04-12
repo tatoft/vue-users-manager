@@ -3,16 +3,30 @@ import { ref } from 'vue'
 
 const emit = defineEmits(['submit', 'cancel'])
 
+
+const props = defineProps({
+  user: {
+    type: Object,
+    default: () => ({
+      name: '',
+      username: '',
+      email: '',
+      phone: ''
+    })
+  }
+})
+
 const form = ref({
-  name: '',
-  username: '',
-  email: '',
-  phone: ''
+  name: props.user?.name || '',
+  username: props.user?.username || '',
+  email: props.user?.email || '',
+  phone: props.user?.phone || ''
 })
 
 const handleSubmit = () => {
   emit('submit', form.value)
 }
+
 
 </script>
 
