@@ -21,4 +21,21 @@ export class UserService {
     users.push(user)
     return user
   }
+
+  update(users, updatedUser) {
+    const index = users.findIndex((u) => u.id === updatedUser.id)
+    if (index === -1) {
+      throw new Error(`User with id ${updatedUser.id} not found`)
+    }
+    users[index] = updatedUser
+    return updatedUser
+  }
+
+  delete(users, userId) {
+    const index = users.findIndex((u) => u.id === userId)
+    if (index === -1) {
+      throw new Error(`User with id ${userId} not found`)
+    }
+    users.splice(index, 1)
+  }
 }
