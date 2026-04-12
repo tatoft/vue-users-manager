@@ -7,11 +7,14 @@ import { UserService } from '../services/user.service'
 const showModal = ref(false)
 const userService = new UserService()
 const users = ref([])
+const loading = ref(false)
 
 const fetchUsers = async () => {
+  loading.value = true
   const data = await userService.getAll()
   //console.log(data)
   users.value = data
+  loading.value = false
 }
 
 onMounted(() => {
@@ -37,8 +40,13 @@ onMounted(() => {
       </UserModal>
     </div>
 
-    <!-- Table -->
-    <table class="w-full text-sm table-fixed text-left">
+    <!-- Loader -->
+    <div v-if="loading" class="flex justify-center items-center py-12">
+      <div class="w-8 h-8 border-3 border-[#1A388B] border-t-transparent rounded-full animate-spin"></div>
+    </div>
+
+    <!-- Tabla -->
+    <table v-else class="w-full text-sm table-fixed text-left">
       <thead>
         <tr class="border-b border-gray-200">
           <th class="text-gray-900 font-semibold pb-3 pr-6">Name</th>
