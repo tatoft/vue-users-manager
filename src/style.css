@@ -1,1 +1,16 @@
 @import 'tailwindcss';
+
+.form-label {
+  @apply block text-sm font-medium mb-1;
+}
+
+.form-input {
+  @apply border border-gray-300 rounded-md h-9 px-3 py-1 w-full placeholder:text-sm placeholder:text-gray-500 focus:outline-none focus:ring-1 focus:ring-[#1A388B] focus:bg-white;
+}
+
+.btn-primary {
+  @apply bg-[#1A388B] text-white px-3 py-2 rounded-md text-sm cursor-pointer gap-5 hover:opacity-90 transition-opacity;
+}
+.btn-secondary {
+  @apply px-3 py-2 rounded-md text-sm border border-gray-300 text-gray-700 hover:bg-gray-50 cursor-pointer;
+}
