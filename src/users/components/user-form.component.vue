@@ -1,7 +1,7 @@
 <script setup>
 import { ref } from 'vue'
 
-defineEmits(['submit', 'cancel'])
+const emit = defineEmits(['submit', 'cancel'])
 
 const form = ref({
   name: '',
@@ -10,10 +10,14 @@ const form = ref({
   phone: ''
 })
 
+const handleSubmit = () => {
+  emit('submit', form.value)
+}
+
 </script>
 
 <template>
-  <form @submit.prevent="onSubmit">
+  <form @submit.prevent="handleSubmit">
     <div class="flex flex-col gap-4">
       <div>
         <label class="form-label" for="name">Name</label>

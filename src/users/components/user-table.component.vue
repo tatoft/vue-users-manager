@@ -17,6 +17,11 @@ const fetchUsers = async () => {
   loading.value = false
 }
 
+const addUser = (formData) => {
+  userService.create(users.value, formData)
+  showModal.value = false
+}
+
 onMounted(() => {
   fetchUsers()
 })
@@ -36,7 +41,7 @@ onMounted(() => {
       </button>
       <!-- Modal -->
       <UserModal :show="showModal" title="Add User" @close="showModal = false">
-        <UserForm @cancel="showModal = false" />
+        <UserForm @cancel="showModal = false" @submit="addUser" />
       </UserModal>
     </div>
 

@@ -14,4 +14,11 @@ export class UserService {
     }
     return res.json()
   }
+
+  create(users, newUser) {
+    const id = users.length + 1
+    const user = { id, ...newUser }
+    users.push(user)
+    return user
+  }
 }
