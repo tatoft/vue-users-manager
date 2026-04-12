@@ -1,8 +1,14 @@
-<script setup></script>
+<script setup>
+import UserTable from './users/components/user-table.component.vue'
+// import FooterContent from './shared/components/footer-content.component.vue'
+import NavbarContent from './shared/components/navbar-content.component.vue'
+</script>
 
 <template>
-  <h1 class="bg-red-200">You did it!</h1>
 
+  <navbar-content />
+  <user-table />
+  <!-- <footer-content /> -->
 </template>
 
 <style scoped></style>
